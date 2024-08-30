@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const fetchSongs = createAsyncThunk(('songs/fetchSongs'), async() => {
+export const fetchSongs = createAsyncThunk(('songs/fetchSongs'), async() => {
     try {
         const response = await axios.get('https://cms.samespace.com/items/songs');
-    const songs = response.data;
+        const songs = response.data;
+        return songs
     } catch (e) {
         console.error(e)
     }
 })
 
 
-export const songsSlice = createSlice({
+const songsSlice = createSlice({
     name: 'songs',
     initialState: {
         songsList: [],
@@ -33,3 +34,5 @@ export const songsSlice = createSlice({
             })
     }
 })
+
+export default songsSlice.reducer
