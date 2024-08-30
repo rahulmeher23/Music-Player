@@ -4,7 +4,7 @@ import axios from "axios";
 export const fetchSongs = createAsyncThunk(('songs/fetchSongs'), async() => {
     try {
         const response = await axios.get('https://cms.samespace.com/items/songs');
-        const songs = response.data;
+        const songs = response.data.data;
         return songs
     } catch (e) {
         console.error(e)
