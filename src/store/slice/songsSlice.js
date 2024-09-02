@@ -17,10 +17,24 @@ const songsSlice = createSlice({
     songsList: [],
     songs: [],
     currentSong: null,
+    isPlaying: true,
     loading: false,
     error: null,
   },
   reducers: {
+
+    filterSearch: (state, action) => {
+        const searchQuery = action.payload;
+        if (state.searchQuery.trim() === "") {
+          state.filteredSongs = state.songsList; // Show all songs if the search query is empty or just spaces
+        } else {
+          state.filteredSongs = state.songsList.filter(song => 
+            song.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+            song.artist.toLowerCase().includes(state.searchQuery.toLowerCase())
+          );
+        }
+      },
+
     setCurrentSong: (state, action) => {
       const newSong = action.payload;
       //   const filterSong = state.songsList.filter(
@@ -31,17 +45,51 @@ const songsSlice = createSlice({
       return {
         ...state,
         currentSong: newSong,
+        isPlaying: true
       };
     },
+
     forYou: (state) => {
       state.songs = state.songsList;
     },
+
     topTracks: (state) => {
       const topTracks = state.songsList.filter(
         (song) => song.top_track === true
       );
       state.songs = topTracks;
     },
+
+    pause: (state) => {
+        state.isPlaying = false;
+    },
+
+    play: (state) => {
+        state.isPlaying = true;
+    },
+
+    forward: (state) => {
+        if (state.currentSong) {
+            const currentIndex = state.songsList.findIndex(
+              (song) => song.id === state.currentSong.id
+            );
+            const nextIndex = (currentIndex + 1) % state.songsList.length;
+            state.currentSong = state.songsList[nextIndex];
+            state.isPlaying = true;
+          }
+    },
+
+    previous: (state) => {
+        if (state.currentSong) {
+          const currentIndex = state.songsList.findIndex(
+            (song) => song.id === state.currentSong.id
+          );
+          const prevIndex =
+            (currentIndex - 1 + state.songsList.length) % state.songsList.length;
+          state.currentSong = state.songsList[prevIndex];
+          state.isPlaying = true;
+        }
+      },
   },
   extraReducers: (builder) => {
     builder
@@ -61,4 +109,4 @@ const songsSlice = createSlice({
 });
 
 export default songsSlice.reducer;
-export const { setCurrentSong, forYou, topTracks } = songsSlice.actions;
+export const { setCurrentSong, forYou, topTracks, play, pause, forward, previous } = songsSlice.actions;

@@ -30,7 +30,8 @@ const SongsList = () => {
                 </div>
 
                 {/* SongsList */}
-                <div className='songs-list flex-1 overflow-y-scroll h-[calc(100vh-40px-136px)] '>
+                {/* <div className='songs-list flex-1 overflow-y-scroll h-[calc(100vh-40px-136px)] '> */}
+                <div className='songs-list flex-1 overflow-y-scroll h-[calc(100vh-40px-136px)] grid grid-rows-8 '>
                     {
                         loading ? (<div className='h-full  text-3xl'>
                             <ScaleLoader
