@@ -83,12 +83,12 @@ const Player = () => {
     };
 
     return (
-        <div className='player-wrapper h-full w-[53vh] flex flex-col justify-center gap-8'>
+        <div className='player-wrapper h-full w-[53vh] flex flex-col justify-center gap-8 p-5'>
             <audio ref={audioRef} src={songURL} preload="metadata"></audio>
             
             {/* Song Title */}
             <div className='song-title flex flex-col gap-2'>
-                <p className='xl:text-2xl 2xl:text-[32px] font-bold'>{currentSong?.name}</p>
+                <p className='text-2xl xl:text-2xl 2xl:text-[32px] font-bold'>{currentSong?.name}</p>
                 <p className='text-base text-white opacity-60'>{currentSong?.artist}</p>
             </div>
 

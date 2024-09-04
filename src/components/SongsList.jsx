@@ -14,9 +14,10 @@ const SongsList = () => {
     return (
         <>
             {/* <div className='songs-list mt-10 h-[calc(100vh-40px)] max-h-[calc(100vh-40px)] overflow-y-scroll'> */}
-            <div className='songs-list mt-10 xl:w-[350px]  2xl:w-[432px]'>
+            <div className='songs-list xl:mt-10 xl:w-[350px]  2xl:w-[432px] p-5 xl:p-0'>
                 {/* Header Options */}
-                <div className='list-header flex gap-10 px-4 text-2xl font-bold mb-8'>
+                
+                <div className='list-header flex gap-10 px-4 text-xl md:text-2xl font-bold mb-5 xl:mb-8'>
                     <p className={`${tab ? 'text-white' : "text-white opacity-50"} cursor-pointer`} onClick={() => { setTab(true); dispatch(forYou()) }}>For You</p>
                     <p className={`${!tab ? 'text-white' : "text-white opacity-50"} cursor-pointer`} onClick={() => { setTab(false); dispatch(topTracks()) }}>Top Tracks</p>
                 </div>

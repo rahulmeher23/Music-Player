@@ -1,49 +1,43 @@
-import React, { useState } from 'react'
-import { Logo, HamburgerIcon } from '../assets/AppIcons'
+import React, { useState } from 'react';
+import { Logo, HamburgerIcon } from '../assets/AppIcons';
 import SongsList from './SongsList';
 import { useSelector } from 'react-redux';
 
 const MobileNavbar = () => {
-    const currentSong = useSelector(state => state.songs.currentSong)
+  const currentSong = useSelector(state => state.songs.currentSong);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
+  const toggleMenu = () => {
+    setMenuOpen(prev => !prev);
+  };
 
-    const [menuOpen, setMenuOpen] = useState(false);
+  return (
+    <>
+      <div className="flex px-5 py-5 justify-between w-full xl:hidden">
+        <Logo />
+        <div className="w-8 h-8" onClick={toggleMenu}><HamburgerIcon /></div>
+      </div>
 
-    return (
-        <>
-            <div className='flex px-5 py-5 justify-between w-full xl:hidden '>
-                <Logo />
-                <div className="w-8 h-8" onClick={() => setMenuOpen(prev => !prev)}><HamburgerIcon /></div>
-            </div>
+      <div
+        className={`fixed inset-y-0 right-0 transform ${menuOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out z-50 w-screen md:w-[60vw] lg:w-[55vw]`}
+        style={{
+          background: `linear-gradient(to left top, #000, ${currentSong ? currentSong.accent : "#331E00"})`,
+        }}
+      >
+        <div className="flex justify-end items-center px-5 pt-5">
+          {/* <Logo /> */}
+          <button onClick={toggleMenu} className="text-3xl text-white">&times;</button>
+        </div>
 
-            <div className="relative z-50">
-                <div
-                    className={`fixed top-0 left-0 w-full h-full  text-white transform ${menuOpen ? 'translate-x-0' : 'translate-x-full'
-                        } transition-transform duration-300 ease-in-out z-50`}
-                    style={{
-                        background: `linear-gradient(to left top, #000, ${currentSong ? currentSong.accent : "#331E00"})`,
-                    }}
-                >
-                    <div className="flex justify-start absolute top-0 right-0 p-5">
-                        <button onClick={toggleMenu} className="text-3xl">&times;</button>
-                    </div>
+        <div className="overflow-y-auto h-full">
+          <SongsList />
+        </div>
+      </div>
 
-                    {/* Nav Menus */}
-                    {/* <div className="flex flex-col items-center justify-center h-full space-y-8">
-                        <div onClick={toggleMenu} className="text-2xl hover:text-gray-400">Home</div>
-                        <div onClick={toggleMenu} className="text-2xl hover:text-gray-400">Shop</div>
-                        <div onClick={toggleMenu} className="text-2xl hover:text-gray-400">Wishlist</div>
-                        <div onClick={toggleMenu} className="text-2xl hover:text-gray-400">Account</div>
-                        <div onClick={toggleMenu} className="text-2xl hover:text-gray-400">Cart</div>
-                    </div> */}
-                    <SongsList />
-                </div>
-            </div>
-        </>
-    )
+      {/* Overlay to close the menu when clicked */}
+      {menuOpen && <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={toggleMenu}></div>}
+    </>
+  );
 }
 
-export default MobileNavbar
+export default MobileNavbar;
