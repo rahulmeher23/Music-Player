@@ -22,18 +22,30 @@ const songsSlice = createSlice({
     error: null,
   },
   reducers: {
-
     filterSearch: (state, action) => {
-        const searchQuery = action.payload;
-        if (state.searchQuery.trim() === "") {
-          state.filteredSongs = state.songsList; // Show all songs if the search query is empty or just spaces
-        } else {
-          state.filteredSongs = state.songsList.filter(song => 
-            song.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-            song.artist.toLowerCase().includes(state.searchQuery.toLowerCase())
-          );
-        }
-      },
+      const searchQuery = action.payload;
+      let filteredSongs = [];
+      if (state.searchQuery === "") {
+        filteredSongs = state.songsList; // Show all songs if the search query is empty or just spaces
+      } else {
+        filteredSongs = state.songsList.filter(
+          (song) =>
+            song.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            song.artist.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+
+      // if (state.searchQuery === "") {
+      //   state.filteredSongs = state.songsList; // Show all songs if the search query is empty or just spaces
+      // } else {
+      //   state.filteredSongs = state.songsList.filter(
+      //     (song) =>
+      //       song.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+      //       song.artist.toLowerCase().includes(state.searchQuery.toLowerCase())
+      //   );
+      // }
+      state.songs = filteredSongs;
+    },
 
     setCurrentSong: (state, action) => {
       const newSong = action.payload;
@@ -45,7 +57,7 @@ const songsSlice = createSlice({
       return {
         ...state,
         currentSong: newSong,
-        isPlaying: true
+        isPlaying: true,
       };
     },
 
@@ -61,35 +73,35 @@ const songsSlice = createSlice({
     },
 
     pause: (state) => {
-        state.isPlaying = false;
+      state.isPlaying = false;
     },
 
     play: (state) => {
-        state.isPlaying = true;
+      state.isPlaying = true;
     },
 
     forward: (state) => {
-        if (state.currentSong) {
-            const currentIndex = state.songsList.findIndex(
-              (song) => song.id === state.currentSong.id
-            );
-            const nextIndex = (currentIndex + 1) % state.songsList.length;
-            state.currentSong = state.songsList[nextIndex];
-            state.isPlaying = true;
-          }
+      if (state.currentSong) {
+        const currentIndex = state.songsList.findIndex(
+          (song) => song.id === state.currentSong.id
+        );
+        const nextIndex = (currentIndex + 1) % state.songsList.length;
+        state.currentSong = state.songsList[nextIndex];
+        state.isPlaying = true;
+      }
     },
 
     previous: (state) => {
-        if (state.currentSong) {
-          const currentIndex = state.songsList.findIndex(
-            (song) => song.id === state.currentSong.id
-          );
-          const prevIndex =
-            (currentIndex - 1 + state.songsList.length) % state.songsList.length;
-          state.currentSong = state.songsList[prevIndex];
-          state.isPlaying = true;
-        }
-      },
+      if (state.currentSong) {
+        const currentIndex = state.songsList.findIndex(
+          (song) => song.id === state.currentSong.id
+        );
+        const prevIndex =
+          (currentIndex - 1 + state.songsList.length) % state.songsList.length;
+        state.currentSong = state.songsList[prevIndex];
+        state.isPlaying = true;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -109,4 +121,13 @@ const songsSlice = createSlice({
 });
 
 export default songsSlice.reducer;
-export const { setCurrentSong, forYou, topTracks, play, pause, forward, previous } = songsSlice.actions;
+export const {
+  setCurrentSong,
+  forYou,
+  topTracks,
+  play,
+  pause,
+  forward,
+  previous,
+  filterSearch,
+} = songsSlice.actions;
